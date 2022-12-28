@@ -26,20 +26,20 @@ const router = new VueRouter({
         ],
       },
     },
-    {
-      path: '/coffee',
-      name: 'coffee',
-      component: () => import('@core/layouts/components/Coffee.vue'),
-      meta: {
-        pageTitle: 'Donation',
-        breadcrumb: [
-          {
-            text: 'Buy me a cup of coffee!',
-            active: false,
-          },
-        ],
-      },
-    },
+    // {
+    //   path: '/coffee',
+    //   name: 'coffee',
+    //   component: () => import('@core/layouts/components/Coffee.vue'),
+    //   meta: {
+    //     pageTitle: 'Donation',
+    //     breadcrumb: [
+    //       {
+    //         text: 'Buy me a cup of coffee!',
+    //         active: false,
+    //       },
+    //     ],
+    //   },
+    // },
     {
       path: '/wallet/accounts',
       alias: '/wallet',

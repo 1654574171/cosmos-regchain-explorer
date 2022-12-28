@@ -1,5 +1,6 @@
 <template>
   <p class="clearfix mb-0">
+  <!--
     <span class="float-md-left d-none d-md-block d-md-inline-block mt-25">
       Powered By
       <b-link
@@ -25,6 +26,7 @@
         />
       </span>
     </router-link>
+    -->
   </p>
 </template>
 
@@ -35,7 +37,7 @@ import Ripple from 'vue-ripple-directive'
 export default {
   name: 'AppFooter',
   components: {
-    BLink,
+    // BLink,
   },
   directives: {
     'b-popover': VBPopover,

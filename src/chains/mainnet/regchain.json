@@ -1,0 +1,25 @@
+{
+    "chain_name": "regchain",
+    "coingecko": "regchain",
+    "api": [
+        "http://192.168.114.12:1317"
+    ],
+    "rpc": [
+        "http://192.168.114.12:26657"
+    ],
+    "snapshot_provider": "",
+    "sdk_version": "0.46.3",
+    "coin_type": "118",
+    "min_tx_fee": "3000",
+    "addr_prefix": "reg",
+    "logo": "/logos/evmos.jpeg",
+    "assets": [
+        {
+            "base": "stake",
+            "symbol": "STAKE",
+            "exponent": "0",
+            "coingecko_id": "",
+            "logo": "/logos/evmos.jpeg"
+        }
+    ]
+}
