@@ -18,6 +18,7 @@ export default class BlockHeader {
     this.last_results_hash = ''
     this.evidence_hash = ''
     this.proposer_address = ''
+    this.cproof_hash = []
   }
 
   static create(element) {
@@ -36,6 +37,7 @@ export default class BlockHeader {
     self.last_results_hash = element.last_results_hash
     self.evidence_hash = element.evidence_hash
     self.proposer_address = element.proposer_address
+    self.cproof_hash = element.cproof_hash
     return self
   }
 }

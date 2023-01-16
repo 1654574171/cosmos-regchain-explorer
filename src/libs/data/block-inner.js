@@ -8,6 +8,7 @@ export default class BlockInner {
     this.data = new BlockData()
     this.evidence = { evidence: [] }
     this.last_commit = new BlockLastCommit()
+    this.cproofs = []
   }
 
   static create(element) {
@@ -16,6 +17,7 @@ export default class BlockInner {
     self.data = BlockData.create(element.data)
     self.evidence = element.evidence
     self.last_commit = BlockLastCommit.create(element.last_commit)
+    self.cproofs = element.cproofs
     return self
   }
 }
