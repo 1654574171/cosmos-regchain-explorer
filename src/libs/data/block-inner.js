@@ -17,7 +17,7 @@ export default class BlockInner {
     self.data = BlockData.create(element.data)
     self.evidence = element.evidence
     self.last_commit = BlockLastCommit.create(element.last_commit)
-    self.cproofs = element.cproofs
+    self.cproofs = element.cproof.cproofs
     return self
   }
 }

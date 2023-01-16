@@ -106,7 +106,6 @@ export default {
       this.height = height
       this.$http.getBlockByHeight(height).then(res => {
         this.block = res
-        console.log(this.block)
         const { txs } = res.block.data
         if (txs === null) return
         const array = []
