@@ -50,7 +50,8 @@
     "statesync": "State Sync",
     "trade": "Trade",
     "parameters": "Parameters",
-    "consensus": "consensus"
+    "consensus": "consensus",
+    "regulatory": "Regulatory"
   },
 
   "governance-proposal": {
@@ -85,5 +86,5 @@
     "proposal_votes_nwv": "voted No With Veto",
     "proposal_votes_abstain": "voted Abstain",
     "proposal_votes_load": "Load More Votes"
-  }  
+  }
 }

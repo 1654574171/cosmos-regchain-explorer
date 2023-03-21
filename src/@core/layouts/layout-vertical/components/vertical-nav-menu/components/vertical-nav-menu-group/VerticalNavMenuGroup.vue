@@ -13,14 +13,24 @@
       @click="() => updateGroupOpen(!isOpen)"
     >
       <b-avatar
+        v-if="item.icon"
         variant="transparent"
         :src="item.icon"
         icon="people-fill"
         size="sm"
         class="mr-1"
       />
+      <feather-icon
+        v-else
+        :icon="item.icon || 'ChevronRightIcon'"
+      />
 
-      <span class="menu-title text-truncate text-uppercase">{{ item.title }}</span>
+      <span
+        v-if="item.icon"
+        class="menu-title text-truncate text-uppercase">{{ item.title }}</span>
+      <span
+        v-else
+        class="menu-title text-truncate">{{ t(item.title) }}</span>
       <b-badge
         v-if="item.tag"
         pill

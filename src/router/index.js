@@ -378,6 +378,98 @@ const router = new VueRouter({
         ],
       },
     },
+    // 3. REGCHAIN
+    {
+      path: '/:chain/regchain/regulatory/rules',
+      name: 'rules',
+      component: () => import('@/views/Rules.vue'),
+      meta: {
+        pageTitle: 'Rules',
+        breadcrumb: [
+          {
+            text: 'Regulatory',
+            active: true,
+          },
+          {
+            text: 'Rules',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/:chain/regchain/regulatory/bindings',
+      name: 'bindings',
+      component: () => import('@/views/Bindings.vue'),
+      meta: {
+        pageTitle: 'Bindings',
+        breadcrumb: [
+          {
+            text: 'Regulatory',
+            active: true,
+          },
+          {
+            text: 'Bindings',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/:chain/regchain/regulatory/registers',
+      name: 'registers',
+      component: () => import('@/views/Registers.vue'),
+      meta: {
+        pageTitle: 'Registers',
+        breadcrumb: [
+          {
+            text: 'Regulatory',
+            active: true,
+          },
+          {
+            text: 'Registers',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/:chain/regchain/regulatory/relations',
+      name: 'relations',
+      component: () => import('@/views/Relations.vue'),
+      meta: {
+        pageTitle: 'Relations',
+        breadcrumb: [
+          {
+            text: 'Regulatory',
+            active: true,
+          },
+          {
+            text: 'Relations',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+      path: '/:chain/regchain/regulatory/system-proposal',
+      name: 'system-proposal',
+      component: () => import('@/views/SystemProposal.vue'),
+      meta: {
+        pageTitle: 'SystemProposal',
+        breadcrumb: [
+          {
+            text: 'Regulatory',
+            active: true,
+          },
+          {
+            text: 'SystemProposal',
+            active: true,
+          },
+        ],
+      },
+    },
+
     // common modules
     {
       path: '/:chain/consensus',

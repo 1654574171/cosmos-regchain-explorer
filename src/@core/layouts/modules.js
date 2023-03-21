@@ -50,4 +50,31 @@ export default () => ([
     title: 'dashboard.trade',
     route: 'osmosis-trade',
   },
+  {
+    scope: 'regchain',
+    title: 'dashboard.regulatory',
+    route: 'regulatory',
+    children: [
+      {
+        title: 'rules',
+        route: 'rules',
+      },
+      {
+        title: 'bindings',
+        route: 'bindings',
+      },
+      {
+        title: 'registers',
+        route: 'registers',
+      },
+      {
+        title: 'relations',
+        route: 'relations',
+      },
+      {
+        title: 'system proposal',
+        route: 'system-proposal',
+      },
+    ],
+  },
 ])

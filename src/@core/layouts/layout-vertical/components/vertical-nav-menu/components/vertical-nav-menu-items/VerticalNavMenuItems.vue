@@ -44,9 +44,25 @@ export default {
       modules().forEach(m => {
         if (excludes === undefined || excludes.indexOf(m.route) === -1) {
           if (m.scope.match('normal') || m.scope.match(selected.chain_name)) {
+            if (!m.children) {
+              children.push({
+                title: m.title,
+                route: { name: m.route, params: { chain: selected.chain_name } },
+              })
+              return
+            }
+            // sub menu
+            const subChildren = []
+            m.children.forEach(mc => {
+              subChildren.push({
+                title: mc.title,
+                route: { name: mc.route, params: { chain: selected.chain_name } },
+              })
+            })
             children.push({
               title: m.title,
               route: { name: m.route, params: { chain: selected.chain_name } },
+              children: subChildren,
             })
           }
         }
