@@ -1,3 +1,7 @@
+export { default as Rule } from './rule'
+export { default as Binding } from './binding'
+export { default as Register } from './register'
+export { default as Relation } from './relation'
 export { default as Proposal } from './proposal'
 export { default as ProposalTally } from './proposal-tally'
 export { default as StakingPool } from './staking-pool'

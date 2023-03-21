@@ -5,8 +5,23 @@ import compareVersions from 'compare-versions'
 import { TxRaw } from 'cosmjs-types/cosmos/tx/v1beta1/tx'
 import { fromHex, toBase64 } from '@cosmjs/encoding'
 import {
-  Proposal, ProposalTally, Proposer, StakingPool, Votes, Deposit,
-  Validator, StakingParameters, Block, ValidatorDistribution, StakingDelegation, WrapStdTx, getUserCurrency,
+  Rule,
+  Binding,
+  Register,
+  Relation,
+  Proposal,
+  ProposalTally,
+  Proposer,
+  StakingPool,
+  Votes,
+  Deposit,
+  Validator,
+  StakingParameters,
+  Block,
+  ValidatorDistribution,
+  StakingDelegation,
+  WrapStdTx,
+  getUserCurrency,
 } from './utils'
 import OsmosAPI from './osmos'
 
@@ -421,6 +436,35 @@ export default class ChainFetch {
         proposals: ret,
         pagination: data.pagination,
       }
+    })
+  }
+
+  // regulatory
+  async getRuleList() {
+    return this.get('/regulatory/regulatory/rule?pagination.limit=20&pagination.reverse=true', null, true).then(data => {
+      const result = commonProcess(data.rule).map(i => new Rule().init(i))
+      return result
+    })
+  }
+
+  async getBindingList() {
+    return this.get('/regulatory/regulatory/binding?pagination.limit=20&pagination.reverse=true', null, true).then(data => {
+      const result = commonProcess(data.binding).map(i => new Binding().init(i))
+      return result
+    })
+  }
+
+  async getRegisterList() {
+    return this.get('/regulatory/regulatory/registration?pagination.limit=20&pagination.reverse=true', null, true).then(data => {
+      const result = commonProcess(data.registration).map(i => new Register().init(i))
+      return result
+    })
+  }
+
+  async getRelationList() {
+    return this.get('/regulatory/regulatory/relation?pagination.limit=20&pagination.reverse=true', null, true).then(data => {
+      const result = commonProcess(data.relation).map(i => new Relation().init(i))
+      return result
     })
   }
 
