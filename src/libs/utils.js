@@ -23,6 +23,7 @@ import { SigningStargateClient } from '@cosmjs/stargate'
 import { getSigningClient } from './client/SigningEthermintClient.ts'
 import EthereumLedgerSigner from './client/EthereumLedgerSigner.ts'
 import SigningKeplerEthermintClient from './client/SigningKeplrEthermintClient'
+import PingWalletClient from './data/signing'
 
 dayjs.extend(localeData)
 dayjs.extend(duration)
@@ -253,7 +254,7 @@ export async function sign(device, chainId, signerAddress, messages, fee, memo, 
       client = await SigningKeplerEthermintClient.offline(signer)
     } else {
       const signer = window.getOfflineSignerOnlyAmino(chainId)
-      client = await SigningStargateClient.offline(signer)
+      client = await PingWalletClient.offline(signer)
     }
   }
   const coinType = Number(hdpath[1])

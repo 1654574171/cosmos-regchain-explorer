@@ -30,374 +30,401 @@
         />
       </b-tabs>
     </b-card>
-    <b-form>
-      <template>
-        <!-- Title -->
-        <b-row>
-          <b-col>
-            <b-form-group
-              label="Proposal Title"
-              label-for="Title"
-            >
-              <validation-provider
-                v-slot="{ errors }"
-                rules="required"
-                name="title"
+    <validation-observer
+      ref="simpleRules"
+    >
+      <b-form>
+        <template>
+          <!-- Title -->
+          <b-row>
+            <b-col>
+              <b-form-group
+                label="Proposal Title"
+                label-for="Title"
               >
-                <b-form-input
-                  id="Title"
-                  v-model="title"
-                  trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <!-- Description -->
-        <b-row>
-          <b-col>
-            <b-form-group
-              label="Proposal Description"
-              label-for="Description"
-            >
-              <validation-provider
-                v-slot="{ errors }"
-                rules="required"
-                name="description"
-              >
-                <b-form-input
-                  id="Description"
-                  v-model="description"
-                  trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <!-- Amount -->
-        <b-row>
-          <b-col>
-            <b-form-group
-              label="Deposit Amount"
-              label-for="Amount"
-            >
-              <validation-provider
-                v-slot="{ errors }"
-                rules="required|regex:^([0-9\.]+)$"
-                name="amount"
-              >
-                <b-input-group class="mb-25">
-                  <b-form-input
-                    id="Amount"
-                    v-model="amount"
-                    :state="errors.length > 0 ? false:null"
-                    placeholder="Input a number"
-                    type="number"
-                  />
-                  <b-input-group-append is-text>
-                    {{ printDenom() }}
-                  </b-input-group-append>
-                </b-input-group>
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-          <b-col>
-            <b-form-group
-              label="Available Token"
-              label-for="Token"
-            >
-              <validation-provider
-                #default="{ errors }"
-                rules="required"
-                name="Token"
-              >
-                <b-form-select
-                  v-model="token"
+                <validation-provider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="title"
                 >
-                  <b-form-select-option
-                    v-for="item in balanceOptions"
-                    :key="item.denom"
-                    :value="item.denom"
+                  <b-form-input
+                    id="Title"
+                    v-model="title"
+                    trim
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <!-- Description -->
+          <b-row>
+            <b-col>
+              <b-form-group
+                label="Proposal Description"
+                label-for="Description"
+              >
+                <validation-provider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="description"
+                >
+                  <b-form-input
+                    id="Description"
+                    v-model="description"
+                    trim
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <!-- Amount -->
+          <b-row>
+            <b-col>
+              <b-form-group
+                label="Deposit Amount"
+                label-for="Amount"
+              >
+                <validation-provider
+                  v-slot="{ errors }"
+                  rules="required|regex:^([0-9\.]+)$"
+                  name="amount"
+                >
+                  <b-input-group class="mb-25">
+                    <b-form-input
+                      id="Amount"
+                      v-model="amount"
+                      :state="errors.length > 0 ? false:null"
+                      placeholder="Input a number"
+                      type="number"
+                    />
+                    <b-input-group-append is-text>
+                      {{ printDenom() }}
+                    </b-input-group-append>
+                  </b-input-group>
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group
+                label="Available Token"
+                label-for="Token"
+              >
+                <validation-provider
+                  #default="{ errors }"
+                  rules="required"
+                  name="Token"
+                >
+                  <b-form-select
+                    v-model="token"
                   >
-                    {{ format(item) }}
-                  </b-form-select-option>
-                </b-form-select>
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-      </template>
+                    <b-form-select-option
+                      v-for="item in balanceOptions"
+                      :key="item.denom"
+                      :value="item.denom"
+                    >
+                      {{ format(item) }}
+                    </b-form-select-option>
+                  </b-form-select>
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </template>
 
-      <!-- rule -->
-      <template v-if="tag === `rule`">
-        <b-row>
-          <b-col>
-            <b-form-group
-              label="Rule Name"
-              label-for="RuleName"
-            >
-              <validation-provider
-                v-slot="{ errors }"
-                rules="required"
-                name="ruleName"
+        <!-- rule -->
+        <template v-if="tag === `rule`">
+          <b-row>
+            <b-col>
+              <b-form-group
+                label="Rule Name"
+                label-for="RuleName"
               >
-                <b-form-input
-                  id="RuleName"
-                  v-model="ruleName"
-                  trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
-              label="Rule Content"
-              label-for="RuleContent"
-            >
-              <validation-provider
-                v-slot="{ errors }"
-                rules="required"
-                name="ruleContent"
+                <validation-provider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="ruleName"
+                >
+                  <b-form-input
+                    id="RuleName"
+                    v-model="ruleName"
+                    trim
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
+                label="Rule Content"
+                label-for="RuleContent"
               >
-                <b-form-input
-                  id="RuleContent"
-                  v-model="ruleContent"
-                  trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
-              label="Rule Hash"
-              label-for="RuleHash"
-            >
-              <validation-provider
-                v-slot="{ errors }"
-                rules="required"
-                name="ruleHash"
+                <validation-provider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="ruleContent"
+                >
+                  <b-form-input
+                    id="RuleContent"
+                    v-model="ruleContent"
+                    trim
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
+                label="Rule Hash"
+                label-for="RuleHash"
               >
-                <b-form-input
-                  id="RuleHash"
-                  v-model="ruleHash"
-                  trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-      </template>
-      <!-- binding -->
-      <template v-if="tag === `binding`">
-        <b-row>
-          <b-col>
-            <b-form-group
+                <validation-provider
+                  v-slot="{ errors }"
+                  rules="required"
+                  name="ruleHash"
+                >
+                  <b-form-input
+                    id="RuleHash"
+                    v-model="ruleHash"
+                    trim
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </template>
+        <!-- binding -->
+        <template v-if="tag === `binding`">
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Binding Name"
                 label-for="BindingName"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="bindingName"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="BindingName"
                     v-model="bindingName"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Binding Content"
                 label-for="BindingContent"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="bindingContent"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="BindingContent"
                     v-model="bindingContent"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Rule Files Names (please separate with ',')"
                 label-for="RuleFilesNames"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="ruleFilesNames"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="RuleFilesNames"
                     v-model="ruleFilesNames"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Binding Hash"
                 label-for="BindingHash"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="bindingHash"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="BindingHash"
                     v-model="bindingHash"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-      </template>
-      <!-- register -->
-      <template v-if="tag === `register`">
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </template>
+        <!-- register -->
+        <template v-if="tag === `register`">
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Regulatory Service Name"
                 label-for="RegulatoryServiceName"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="regulatoryServiceName"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="RegulatoryServiceName"
                     v-model="regulatoryServiceName"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Regulatory Service Ip Address"
                 label-for="RegulatoryServiceIpAddress"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="regulatoryServiceIpAddress"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="regulatoryServiceIpAddress"
                     v-model="regulatoryServiceIpAddress"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Regulatory Service Port"
                 label-for="RegulatoryServicePort"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required|regex:^([0-9\.]+)$"
                   name="regulatoryServicePort"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="RegulatoryServicePort"
                     v-model="regulatoryServicePort"
                     type="number"
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-      </template>
-      <!-- relation -->
-      <template v-if="tag === `relation`">
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </template>
+        <!-- relation -->
+        <template v-if="tag === `relation`">
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Relation Contract Address"
                 label-for="RelationContractAddress"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="relationContractAddress"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="RelationContractAddress"
                     v-model="relationContractAddress"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col>
-            <b-form-group
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col>
+              <b-form-group
                 label="Relation Binding Name"
                 label-for="RelationBindingName"
-            >
-              <validation-provider
+              >
+                <validation-provider
                   v-slot="{ errors }"
                   rules="required"
                   name="relationBindingName"
-              >
-                <b-form-input
+                >
+                  <b-form-input
                     id="RelationBindingName"
                     v-model="relationBindingName"
                     trim
-                />
-                <small class="text-danger">{{ errors[0] }}</small>
-              </validation-provider>
-            </b-form-group>
-          </b-col>
-        </b-row>
-      </template>
-    </b-form>
-
+                  />
+                  <small class="text-danger">{{ errors[0] }}</small>
+                </validation-provider>
+              </b-form-group>
+            </b-col>
+          </b-row>
+        </template>
+      </b-form>
+      <b-alert
+        v-model="showDismissibleAlert"
+        variant="danger"
+        dismissible
+      >
+        <div class="alert-body">
+          <span>{{ error }}</span>
+        </div>
+      </b-alert>
+    </validation-observer>
+    <b-modal
+      v-if="showResult"
+      id="trading-deposte-window"
+      centered
+      size="md"
+      title="Cross Chain Deposit Tokens"
+      ok-title="Send"
+      hide-header-close
+      scrollable
+    >
+      <TransactionResult
+        :hash="txHash"
+        :selected-chain="selectedChain"
+      />
+    </b-modal>
     <b-button
       variant="primary"
       class="btn float-right mg-2 mr-1"
@@ -409,8 +436,10 @@
 </template>
 
 <script>
-import { ValidationProvider } from 'vee-validate'
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import {
+  BAlert,
+  BModal,
   BForm,
   BButton,
   BTable,
@@ -431,7 +460,7 @@ import {
   between,
   digits,
   email,
-  integer, length,
+  integer,
   min,
   password,
   required,
@@ -449,10 +478,13 @@ import {
 } from '@/libs/utils'
 import vSelect from 'vue-select'
 import Ripple from 'vue-ripple-directive'
+import TransactionResult from './components/OperationModal/TransactionResult.vue'
 
 export default {
   components: {
+    BAlert,
     BButton,
+    BModal,
     BTab,
     BTabs,
     BCard,
@@ -470,6 +502,8 @@ export default {
     vSelect,
     BInputGroupAppend,
     ValidationProvider,
+    ValidationObserver,
+    TransactionResult,
   },
   directives: {
     Ripple,
@@ -495,6 +529,9 @@ export default {
       address: '',
       token: '',
       chainId: '',
+      error: null,
+      showDismissibleAlert: false,
+      showResult: false,
 
       title: '',
       description: '',
@@ -512,6 +549,7 @@ export default {
       regulatoryServicePort: null,
       relationContractAddress: '',
       relationBindingName: '',
+      operationType: 'insert',
 
       fee: '900',
       feeDenom: '',
@@ -523,6 +561,7 @@ export default {
       sequence: 1,
       accountNumber: 0,
       historyName: '',
+      txHash: '',
 
       required,
       password,
@@ -533,24 +572,29 @@ export default {
       alpha,
       between,
       digits,
-      length,
       alphaDash,
     }
   },
 
   computed: {
     msg() {
-      return [{
+      debugger
+      const txMsgs = []
+      txMsgs.push({
         typeUrl: '/cosmos.gov.v1beta1.MsgSubmitProposal',
         value: {
           proposer: this.address,
           content: {
-            title: this.title,
-            description: this.description,
-            rule: {
-              ruleName: this.ruleName,
-              content: this.ruleContent,
-              hash: this.ruleHash,
+            typeUrl: '/regulatory.regulatory.RuleProposal',
+            value: {
+              title: this.title,
+              description: this.description,
+              rule: {
+                ruleName: this.ruleName,
+                content: this.ruleContent,
+                hash: this.ruleHash,
+              },
+              operationType: this.operationType,
             },
           },
           initialDeposit: {
@@ -558,7 +602,8 @@ export default {
             denom: this.token,
           },
         },
-      }]
+      })
+      return txMsgs
     },
     accounts() {
       const accounts = getLocalAccounts()
@@ -643,48 +688,53 @@ export default {
     switchRelation() {
       this.tag = 'relation'
     },
-    handleSubmit(tag) {
-      debugger
-      console.log('11111111111111')
+    validate(tag) {
       if (!this.title) {
-        this.error = 'title is required'
-        return
+        return 'title is required'
       } if (!this.description) {
-        this.error = 'description is required'
-        return
+        return 'description is required'
       } if (!this.amount) {
-        this.error = 'deposit amount is required'
-        return
+        return 'deposit amount is required'
       }
 
       if (tag === 'rule') {
         if (!this.ruleName) {
-          this.error = 'rule name is required'
-          return
+          return 'rule name is required'
         } if (!this.ruleContent) {
-          this.error = 'rule content is required'
-          return
+          return 'rule content is required'
         } if (!this.ruleHash) {
-          this.error = 'rule hash is required'
-          return
+          return 'rule hash is required'
         }
       }
-      // this.sendTx()
-      this.sendTx().then(ret => {
-        this.error = ret
+      return null
+    },
+    handleSubmit(tag) {
+      const res = this.validate(tag)
+      if (res) {
+        this.error = res
+        this.showDismissibleAlert = true
+        return
+      }
+      this.$refs.simpleRules.validate().then(ok => {
+        if (ok) {
+          this.sendTx().then(ret => {
+            this.error = ret
+          })
+        }
       })
     },
 
     async sendTx() {
-    // sendTx() {
       const txMsgs = this.msg
 
       if (txMsgs.length === 0) {
         this.error = 'No delegation found'
+        this.showDismissibleAlert = true
         return ''
       }
       if (!this.accountNumber) {
         this.error = 'Account number should not be empty!'
+        this.showDismissibleAlert = true
         return ''
       }
 
@@ -723,12 +773,14 @@ export default {
             time: new Date(),
           })
         }).catch(e => {
+          console.log(e)
           this.showResult = false
           this.error = e
           this.showDismissibleAlert = true
         })
       }).catch(e => {
-        this.showResult = false
+        console.log(e)
+        this.showResult = true
         this.error = e
         this.showDismissibleAlert = true
       })

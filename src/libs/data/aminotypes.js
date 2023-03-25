@@ -9,6 +9,7 @@ const amino_1 = require("@cosmjs/amino");
 const encoding_1 = require("@cosmjs/encoding");
 const utils_1 = require("@cosmjs/utils");
 const gov_1 = require("cosmjs-types/cosmos/gov/v1beta1/gov");
+const gov_2 = require("./gov.js")
 const any_1 = require("cosmjs-types/google/protobuf/any");
 const long_1 = __importDefault(require("long"));
 function omitDefault(input) {
@@ -157,6 +158,19 @@ function createDefaultTypes(prefix) {
                         };
                         break;
                     }
+                    case "/regulatory.regulatory.RuleProposal": {
+                        const ruleProposal = gov_2.RuleProposal.encode(content.value);
+                        proposal = {
+                            type: "cosmos-sdk/RuleProposal",
+                            value: {
+                                description: ruleProposal.description,
+                                title: ruleProposal.title,
+                                rule: ruleProposal.rule,
+                                operationType: ruleProposal.operationType,
+                            },
+                        };
+                        break;
+                    }
                     default:
                         throw new Error(`Unsupported proposal type: '${content.typeUrl}'`);
                 }
@@ -180,6 +194,20 @@ function createDefaultTypes(prefix) {
                             value: gov_1.TextProposal.encode(gov_1.TextProposal.fromPartial({
                                 title: title,
                                 description: description,
+                            })).finish(),
+                        });
+                        break;
+                    }
+                    case "cosmos-sdk/RuleProposal": {
+                        const { value } = content;
+                        const { title, description, rule, operationType } = value;
+                        any_content = any_1.Any.fromPartial({
+                            typeUrl: "/regulatory.regulatory.RuleProposal",
+                            value: gov_2.RuleProposal.decode(gov_2.RuleProposal.fromPartial({
+                                title: title,
+                                description: description,
+                                rule: rule,
+                                operationType: operationType
                             })).finish(),
                         });
                         break;

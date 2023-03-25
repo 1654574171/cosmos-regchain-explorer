@@ -82,6 +82,11 @@
               {{ 'timeout_height' }}
             </b-td><b-td>{{ tx.tx.timeout_height }}</b-td>
           </b-tr>
+          <b-tr>
+            <b-td>
+              {{ 'cproof' }}
+            </b-td><b-td :small="true">{{ cproof }}</b-td>
+          </b-tr>
         </tbody>
       </b-table-simple>
     </b-card>
@@ -111,7 +116,9 @@
 import {
   BCard, BTableSimple, BTr, BTd, BBadge, BCardBody, BAlert, BCardTitle,
 } from 'bootstrap-vue'
-import { toDay, tokenFormatter } from '@/libs/utils'
+import { abbr, toDay, tokenFormatter } from '@/libs/utils'
+import { fromBase64, toHex } from '@cosmjs/encoding'
+import { sha256 } from '@cosmjs/crypto'
 import ObjectFieldComponent from './components/ObjectFieldComponent.vue'
 
 export default {
@@ -142,6 +149,7 @@ export default {
     return {
       error: null,
       tx: { tx: {} },
+      cproof: '',
     }
   },
   created() {
@@ -149,10 +157,16 @@ export default {
     this.$http.getTxs(hash).then(res => {
       this.error = null
       this.tx = res
+      this.$http.getBlockByHeight(res.height).then(b => {
+        const txIndex = b.block.data.txs.findIndex(x => toHex(sha256(fromBase64(x))).toUpperCase() === hash)
+        this.cproof = b.block.cproofs[txIndex]
+        console.log(this.cproof)
+      })
     }).catch(err => {
       this.error = err
     })
   },
+
   methods: {
     formattoken: v => tokenFormatter(v),
     formatTime: v => toDay(v),

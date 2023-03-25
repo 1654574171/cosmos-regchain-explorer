@@ -14,12 +14,21 @@ const tx_5 = require('cosmjs-types/cosmos/tx/v1beta1/tx')
 const signing_1 = require('cosmjs-types/cosmos/tx/signing/v1beta1/signing')
 
 export default class PingWalletClient extends SigningStargateClient {
+  // static async offline(signer, options = {}) {
+  //   const instance = new PingWalletClient(undefined, signer, options)
+  //
+  //   instance.registry.register('/osmosis.gamm.v1beta1.MsgSwapExactAmountIn', MsgSwapExactAmountIn)
+  //
+  //   // console.log('registory:', instance.registry, AminoTypes)
+  //   const { aminoTypes = new AminoTypes({ prefix: options.prefix }) } = options
+  //   instance.aminoTypes = aminoTypes
+  //   // console.log('aminoType:', instance.aminoTypes)
+  //   return instance
+  // }
+
   static async offline(signer, options = {}) {
     const instance = new PingWalletClient(undefined, signer, options)
 
-    instance.registry.register('/osmosis.gamm.v1beta1.MsgSwapExactAmountIn', MsgSwapExactAmountIn)
-
-    // console.log('registory:', instance.registry, AminoTypes)
     const { aminoTypes = new AminoTypes({ prefix: options.prefix }) } = options
     instance.aminoTypes = aminoTypes
     // console.log('aminoType:', instance.aminoTypes)
