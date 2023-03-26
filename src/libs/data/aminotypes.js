@@ -11,6 +11,9 @@ const utils_1 = require("@cosmjs/utils");
 const gov_1 = require("cosmjs-types/cosmos/gov/v1beta1/gov");
 const gov_2 = require("./gov.js")
 const any_1 = require("cosmjs-types/google/protobuf/any");
+const { stringToUint8Array,
+    objToUint8Array
+} = require('@/libs/utils')
 const long_1 = __importDefault(require("long"));
 function omitDefault(input) {
     if (typeof input === "string") {
@@ -159,12 +162,12 @@ function createDefaultTypes(prefix) {
                         break;
                     }
                     case "/regulatory.regulatory.RuleProposal": {
-                        const ruleProposal = gov_2.RuleProposal.encode(content.value);
+                        const ruleProposal = gov_2.RuleProposal.decode(content.value);
                         proposal = {
                             type: "cosmos-sdk/RuleProposal",
                             value: {
-                                description: ruleProposal.description,
                                 title: ruleProposal.title,
+                                description: ruleProposal.description,
                                 rule: ruleProposal.rule,
                                 operationType: ruleProposal.operationType,
                             },
@@ -199,15 +202,14 @@ function createDefaultTypes(prefix) {
                         break;
                     }
                     case "cosmos-sdk/RuleProposal": {
-                        const { value } = content;
-                        const { title, description, rule, operationType } = value;
+                        const value = content.value;
                         any_content = any_1.Any.fromPartial({
                             typeUrl: "/regulatory.regulatory.RuleProposal",
-                            value: gov_2.RuleProposal.decode(gov_2.RuleProposal.fromPartial({
-                                title: title,
-                                description: description,
-                                rule: rule,
-                                operationType: operationType
+                            value: gov_2.RuleProposal.encode(gov_2.RuleProposal.fromPartial({
+                                title: content.value.title,
+                                description: content.value.description,
+                                rule: content.value.rule,
+                                operationType: content.value.operationType,
                             })).finish(),
                         });
                         break;

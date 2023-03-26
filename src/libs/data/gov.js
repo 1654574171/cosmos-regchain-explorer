@@ -4,13 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TallyParams = exports.VotingParams = exports.DepositParams = exports.Vote = exports.TallyResult = exports.Proposal = exports.Deposit = exports.TextProposal = exports.proposalStatusToJSON = exports.proposalStatusFromJSON = exports.ProposalStatus = exports.voteOptionToJSON = exports.voteOptionFromJSON = exports.VoteOption = exports.protobufPackage = void 0;
+exports.RuleProposal = void 0;
 const long_1 = __importDefault(require("long"));
 const minimal_1 = __importDefault(require("protobufjs/minimal"));
 const any_1 = require("cosmjs-types/google/protobuf/any");
-const duration_1 = require("cosmjs-types/google/protobuf/duration");
-const timestamp_1 = require("cosmjs-types/google/protobuf/timestamp");
-const coin_1 = require("cosmjs-types/cosmos/base/v1beta1/coin");
+const rule_1 = require("./gov-rule");
+const duration_1 = require('cosmjs-types/google/protobuf/duration')
 exports.protobufPackage = "cosmos.gov.v1beta1";
 
 const baseRuleProposal = { title: "", description: "", operationType: "" };
@@ -23,7 +22,7 @@ exports.RuleProposal = {
             writer.uint32(18).string(message.description);
         }
         if (message.rule !== undefined) {
-            any_1.Any.encode(message.content, writer.uint32(24).fork()).ldelim();
+            rule_1.Rule.encode(message.rule, writer.uint32(26).fork()).ldelim();
         }
         if (message.operationType !== "") {
             writer.uint32(34).string(message.operationType);
@@ -44,7 +43,7 @@ exports.RuleProposal = {
                     message.description = reader.string();
                     break;
                 case 3:
-                    message.rule = any_1.Any.decode(reader, reader.uint32());
+                    message.rule = rule_1.Rule.decode(reader, reader.uint32());
                     break;
                 case 4:
                     message.operationType = reader.string();
@@ -57,17 +56,21 @@ exports.RuleProposal = {
         return message;
     },
     fromPartial(object) {
-        var _a, _b;
+        var _a, _b, _c;
         const message = Object.assign({}, baseRuleProposal);
         message.title = (_a = object.title) !== null && _a !== void 0 ? _a : "";
         message.description = (_b = object.description) !== null && _b !== void 0 ? _b : "";
-        if (object.content !== undefined && object.content !== null) {
-            message.content = any_1.Any.fromPartial(object.content);
+        if (object.rule !== undefined && object.rule !== null) {
+            message.rule = rule_1.Rule.fromPartial(object.rule);
         }
         else {
-            message.content = undefined;
+            message.rule = undefined;
         }
-        message.operationType = (_b = object.operationType) !== null && _b !== void 0 ? _b : "";
+        message.operationType = (_c = object.operationType) !== null && _c !== void 0 ? _c : "";
         return message;
     },
+}
+if (minimal_1.default.util.Long !== long_1.default) {
+    minimal_1.default.util.Long = long_1.default;
+    minimal_1.default.configure();
 }

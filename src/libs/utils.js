@@ -20,6 +20,7 @@ import { $themeColors } from '@themeConfig'
 // import { SigningStargateClient } from '@cosmjs/stargate'
 // import PingWalletClient from './data/signing'
 import { SigningStargateClient } from '@cosmjs/stargate'
+import protoRoot from '@/proto/rule_proposal'
 import { getSigningClient } from './client/SigningEthermintClient.ts'
 import EthereumLedgerSigner from './client/EthereumLedgerSigner.ts'
 import SigningKeplerEthermintClient from './client/SigningKeplrEthermintClient'
@@ -532,6 +533,14 @@ export function getStakingValidatorOperator(chainName, addr, length = -1) {
     return addr.substring(addr.length - length)
   }
   return addr
+}
+
+export function getRuleProposalProtobuf(ruleProposal) {
+  const RuleProposal = protoRoot.lookup('regulatory.regulatory.RuleProposal')
+  const ruleProposalMessage = RuleProposal.create(ruleProposal)
+  const buffer = RuleProposal.encode(ruleProposalMessage).finish()
+
+  return buffer
 }
 
 export * from 'compare-versions'

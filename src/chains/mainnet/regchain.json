@@ -2,10 +2,10 @@
     "chain_name": "regchain",
     "coingecko": "regchain",
     "api": [
-        "http://192.168.114.12:1317"
+        "http://192.168.50.3:1317"
     ],
     "rpc": [
-        "http://192.168.114.12:26657"
+        "http://192.168.50.3:26657"
     ],
     "snapshot_provider": "",
     "sdk_version": "0.46.3",

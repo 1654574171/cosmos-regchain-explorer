@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable  */
 
 import { SigningStargateClient } from '@cosmjs/stargate'
 // import { MsgTransfer } from './msg-transfer'

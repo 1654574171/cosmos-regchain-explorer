@@ -475,6 +475,7 @@ import {
   timeIn,
   getLocalAccounts,
   extractAccountNumberAndSequence,
+  getRuleProposalProtobuf,
 } from '@/libs/utils'
 import vSelect from 'vue-select'
 import Ripple from 'vue-ripple-directive'
@@ -578,32 +579,32 @@ export default {
 
   computed: {
     msg() {
-      debugger
-      const txMsgs = []
-      txMsgs.push({
+      return [{
         typeUrl: '/cosmos.gov.v1beta1.MsgSubmitProposal',
         value: {
           proposer: this.address,
-          content: {
-            typeUrl: '/regulatory.regulatory.RuleProposal',
-            value: {
-              title: this.title,
-              description: this.description,
-              rule: {
-                ruleName: this.ruleName,
-                content: this.ruleContent,
-                hash: this.ruleHash,
-              },
-              operationType: this.operationType,
-            },
-          },
+          content: null,
           initialDeposit: {
             amount: getUnitAmount(this.amount, this.token),
             denom: this.token,
           },
         },
-      })
-      return txMsgs
+      }]
+    },
+    ruleProposalContent() {
+      return {
+        typeUrl: '/regulatory.regulatory.RuleProposal',
+        value: {
+          title: this.title,
+          description: this.description,
+          rule: {
+            ruleName: this.ruleName,
+            content: this.ruleContent,
+            hash: this.ruleHash,
+          },
+          operationType: this.operationType,
+        },
+      }
     },
     accounts() {
       const accounts = getLocalAccounts()
@@ -724,8 +725,19 @@ export default {
       })
     },
 
-    async sendTx() {
+    async sendTx(tag) {
       const txMsgs = this.msg
+      let content
+      switch (tag) {
+        case 'rule': {
+          content = this.ruleProposalContent
+          txMsgs[0].value.content.typeUrl = content.typeUrl
+          txMsgs[0].value.content.value = getRuleProposalProtobuf(content)
+          break
+        }
+        default:
+          break
+      }
 
       if (txMsgs.length === 0) {
         this.error = 'No delegation found'
