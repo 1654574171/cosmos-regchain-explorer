@@ -718,7 +718,7 @@ export default {
       }
       this.$refs.simpleRules.validate().then(ok => {
         if (ok) {
-          this.sendTx().then(ret => {
+          this.sendTx(tag).then(ret => {
             this.error = ret
           })
         }
@@ -731,8 +731,9 @@ export default {
       switch (tag) {
         case 'rule': {
           content = this.ruleProposalContent
-          txMsgs[0].value.content.typeUrl = content.typeUrl
-          txMsgs[0].value.content.value = getRuleProposalProtobuf(content)
+          const contentValue = getRuleProposalProtobuf(content.value)
+          content.value = contentValue
+          txMsgs[0].value.content = content
           break
         }
         default:
